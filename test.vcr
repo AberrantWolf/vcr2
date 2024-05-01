@@ -1,0 +1,14 @@
+# VCR Commands
+---
+command: dir
+
+---
+command: cargo
+options:
+  - value: init
+  - value: build
+  - value: run
+---
+command: git
+options:
+  - value: status

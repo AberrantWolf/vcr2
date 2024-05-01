@@ -12,25 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Dict, List
 from PySide6 import QtCore
-from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QTabWidget
+
+from .command_entry import CommandEntry
+from .command_page import CommandPage
 
 
 class VcrAppWindow(QWidget):
-    def __init__(self):
+    def __init__(self, vcr_configs: List[CommandEntry]):
         super().__init__()
 
         self.setWindowTitle("VCR2 -- We Python Nao")
 
-        self.button: QPushButton = QPushButton("Click Plz")
-        self.text_label: QLabel = QLabel("...text goes here...")
+        self.tab_widget = QTabWidget(self)
 
-        self.layout = QVBoxLayout(self)
-        self.layout.addWidget(self.text_label)
-        self.layout.addWidget(self.button)
+        self._layout = QVBoxLayout(self)
+        self._layout.addWidget(self.tab_widget)
 
-        self.button.clicked.connect(self.on_button_pressed)
-    
-    @QtCore.Slot()
-    def on_button_pressed(self):
-        self.text_label.setText("thank you")
+        self.command_pages = []
+
+        for command in vcr_configs:
+            page = CommandPage(self, command)
+
+            self.tab_widget.addTab(page, page._command.name())
