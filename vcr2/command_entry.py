@@ -22,7 +22,8 @@ class CommandEntry(QObject):
 
         if 'options' in config:
             for opt in config['options']:
-                self._options.append(CommandOption(opt['name'], opt['value']))
+                name = opt['name'] if 'name' in opt else opt['value']
+                self._options.append(CommandOption(name, opt['value']))
     
     def name(self) -> str:
         return self._name
